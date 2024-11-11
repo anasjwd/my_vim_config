@@ -61,3 +61,9 @@ colorscheme gruvbox
 
 "set a plugin manager
 execute pathogen#infect()
+
+"map ctrl+h to ^
+map <C-h> ^
+
+"map ctrl+l $
+map <C-l> $
