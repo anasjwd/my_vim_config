@@ -65,5 +65,58 @@ execute pathogen#infect()
 "map ctrl+h to ^
 map <C-h> ^
 
-"map ctrl+l $
+"map ctrl+l to $
 map <C-l> $
+
+"set default shell to bash
+set shell=/bin/bash
+
+"open :explore with the current working directory
+function! OpenTermInBufferDir()
+    " Check if the current buffer has a valid file path
+    if expand('%:p') != ''
+       " Change to the directory of the current file
+        execute 'lcd ' . expand('%:p:h')
+    endif
+    " Open a vertical terminal window
+    execute 'vert term'
+endfunction
+
+" Map the function to Ctrl-t
+nnoremap <C-t> :call OpenTermInBufferDir()<CR>
+
+" Create a custom command for vertical split with the current working
+" directory
+command! -nargs=* -complete=customlist,BufferDirComplete VSHere call VSplit(<q-args>)
+
+function! BufferDirComplete(ArgLead, CmdLine, CursorPos)
+    let l:olddir = getcwd()
+    execute 'lcd ' . expand('%:p:h')
+    let l:files = glob(a:ArgLead.'*', 0, 1)
+    execute 'lcd ' . l:olddir
+    return l:files
+endfunction
+
+function! VSplit(args)
+    let l:olddir = getcwd()
+    execute 'lcd ' . expand('%:p:h')
+    if empty(a:args)
+        execute 'vertical split'
+    else
+        execute 'vertical split ' . a:args
+    endif
+    execute 'lcd ' . l:olddir
+endfunction
+
+cabbrev vs VSHere
+
+"enabling mouse in vterm
+set mouse=a
+if has('mouse_sgr')
+    set ttymouse=sgr
+else
+    set ttymouse=xterm2
+endif
+
+tmap <ScrollWheelUp> <C-w>N<ScrollWheelUp>
+tmap <ScrollWheelDown> <C-w>N<ScrollWheelDown>
