@@ -85,8 +85,7 @@ endfunction
 " Map the function to Ctrl-t
 nnoremap <C-t> :call OpenTermInBufferDir()<CR>
 
-" Create a custom command for vertical split with the current working
-" directory
+" Create a custom command for vertical split with the current working directory
 command! -nargs=* -complete=customlist,BufferDirComplete VSHere call VSplit(<q-args>)
 
 function! BufferDirComplete(ArgLead, CmdLine, CursorPos)
@@ -118,5 +117,6 @@ else
     set ttymouse=xterm2
 endif
 
+" These mappings are useful for both
 tmap <ScrollWheelUp> <C-w>N<ScrollWheelUp>
 tmap <ScrollWheelDown> <C-w>N<ScrollWheelDown>
